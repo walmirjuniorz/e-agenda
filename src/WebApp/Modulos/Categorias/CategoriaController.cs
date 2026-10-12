@@ -1,48 +1,39 @@
-using eAgenda.Dominio.Modulos.Categorias;
+using eAgenda.Aplicacao.Modulos.Categorias;
 using eAgenda.WebApp.Modulos.Categorias;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eAgenda.WebApp.Modulos.ModuloCategorias.Apresentacao;
 
-public sealed class CategoriaController(IRepositorioCategoria repositorioCategoria) : Controller
+public sealed class CategoriaController(ServicoCategoria servicoCategoria) : Controller
 {
     [HttpGet]
     public ActionResult Listar()
     {
-        List<Categoria> categorias = repositorioCategoria.SelecionarTodos();
+        List<CategoriaDto> categorias = servicoCategoria.SelecionarTodos();
 
-        List<ListarCategoriasViewModel> listarVms = categorias
-        .Select(c => new ListarCategoriasViewModel(c.Id, c.Titulo)).ToList();
-
-        return View();
+        return View(categorias);
     }
     [HttpGet]
     public ActionResult Cadastrar()
     {
-        CadastrarCategotiaViewModel viewModel = new("");
+        CadastrarCategoriaViewModel viewModel = new("");
 
         return View(viewModel);
     }
     [HttpPost]
-    public ActionResult Cadastrar(CadastrarCategotiaViewModel viewModel)
+    public ActionResult Cadastrar(CadastrarCategoriaViewModel viewModel)
     {
-        Categoria categoria = new Categoria(viewModel.Titulo);
+        Result<Guid> resultado = servicoCategoria.Cadastrar(new CadastrarCategoriaDto(viewModel.Titulo));
 
-        List<string> erros = categoria.Validar();
-
-        if (repositorioCategoria.ExisteCategoriaPorTitulo(categoria.Titulo))
+        if (resultado.IsFailed)
         {
-            erros.Add("Já existe uma categoria cadastrada com o título informado.");
-        }
+            string mensagemErro = resultado.Errors.Select(e => e.Message).First();
 
-        if (erros.Count > 0)
-        {
-            ModelState.AddModelError(string.Empty, erros[0]);
+            ModelState.AddModelError(string.Empty, mensagemErro);
 
             return View(viewModel);
         }
-
-        repositorioCategoria.Cadastrar(categoria);
 
         return RedirectToAction(nameof(Listar));
     }
