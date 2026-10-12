@@ -7,7 +7,7 @@ public record CadastrarCategoriaViewModel(
     [StringLength(100, MinimumLength = 2, ErrorMessage = "O campo\"Título\" deve conter entre 2 e 100 caracteres.")]
      string Titulo);
 
-public record EditarCategotiaViewModel(
+public record EditarCategoriaViewModel(
     Guid Id,
     [Required(ErrorMessage = "O campo\"Título\" deve ser preenchido.")]
     [StringLength(100, MinimumLength = 2, ErrorMessage = "O campo\"Título\" deve conter entre 2 e 100 caracteres.")]
