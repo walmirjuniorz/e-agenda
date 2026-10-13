@@ -12,6 +12,6 @@ public record EditarCategoriaViewModel(
     [ValidateNever]
      string Titulo);
 
-public record ExcluirCategotiaViewModel(
+public record ExcluirCategoriaViewModel(
     Guid Id,
      string Titulo);
