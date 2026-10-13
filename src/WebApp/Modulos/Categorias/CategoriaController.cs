@@ -57,12 +57,20 @@ public sealed class CategoriaController(ServicoCategoria servicoCategoria) : Con
     [HttpPost]
     public ActionResult Editar(EditarCategoriaViewModel viewModel)
     {
-        if (!ModelState.IsValid)
-            return View(viewModel);
-
         EditarCategoriaDto dto = new(viewModel.Id, viewModel.Titulo);
 
         Result resultado = servicoCategoria.Editar(dto);
+
+        if (resultado.IsFailed)
+        {
+            string mensagemErro = resultado.Errors.Select(e => e.Message).First();
+
+            ModelState.AddModelError(string.Empty, mensagemErro);
+
+            return View(viewModel);
+        }
+
+        return RedirectToAction(nameof(Listar));
     }
     [HttpGet]
     public ActionResult Excluir(Guid id)

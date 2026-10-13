@@ -13,7 +13,16 @@ public sealed class RepositorioCategoriaEmOrm(eAgendaDbContext dbContext) : IRep
     }
     public bool Editar(Guid idSelecionado, Categoria entidadeAtualizada)
     {
-        throw new NotImplementedException();
+        Categoria? categoria = SelecionarPorId(idSelecionado);
+
+        if (categoria == null)
+            return false;
+
+        categoria.Atualizar(entidadeAtualizada);
+
+        dbContext.SaveChanges();
+
+        return true;
     }
     public bool Excluir(Guid idSelecionado)
     {

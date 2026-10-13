@@ -8,7 +8,7 @@ public sealed class Categoria : EntidadeBase<Categoria>
     public Categoria() { }
     public Categoria(string titulo) : this()
     {
-        Titulo = Titulo;
+        Titulo = titulo;
     }
 
     public override List<string> Validar()
