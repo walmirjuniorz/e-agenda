@@ -2,9 +2,9 @@ using eAgenda.Dominio.Modulos.Categorias;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace eAgenda.Infraestrutura.Categorias;
+namespace eAgenda.Infraestrutura.Modulos.Categorias;
 
-public sealed class CategoriasConfiguration : IEntityTypeConfiguration<Categoria>
+public sealed class CategoriaConfiguration : IEntityTypeConfiguration<Categoria>
 {
     public void Configure(EntityTypeBuilder<Categoria> builder)
     {
