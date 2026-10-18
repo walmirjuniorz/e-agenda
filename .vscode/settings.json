@@ -7,5 +7,9 @@
         "editor.codeActionsOnSave": {
             "source.organizeImports": "always"
         }
+    },
+    "[aspnetcorerazor]": {
+        "editor.wordWrap": "off",
+        "editor.wrappingIndent": "none"
     }
 }
