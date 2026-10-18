@@ -1,3 +1,11 @@
 {
-    "dotnet.defaultSolution": "eAgenda.slnx"
+    "dotnet.defaultSolution": "eAgenda.slnx",
+    "[csharp]": {
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "ms-dotnettools.csharp",
+        "editor.autoIndent": "full",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "always"
+        }
+    }
 }
