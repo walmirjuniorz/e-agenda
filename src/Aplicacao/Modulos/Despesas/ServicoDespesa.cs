@@ -105,6 +105,11 @@ public sealed class ServicoDespesa(
 
     public Result Excluir(Guid id)
     {
+        bool conseguiuExcluir = repositorioDespesa.Excluir(id);
+
+        if (!conseguiuExcluir)
+            return Result.Fail("Não foi possivel excluir a despesa.");
+
         return Result.Ok();
     }
 
