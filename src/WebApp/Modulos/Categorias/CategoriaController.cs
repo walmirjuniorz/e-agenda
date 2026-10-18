@@ -3,7 +3,7 @@ using eAgenda.WebApp.Modulos.Categorias;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eAgenda.WebApp.Modulos.ModuloCategorias.Apresentacao;
+namespace eAgenda.WebApp.Modulos.Categorias;
 
 public sealed class CategoriaController(ServicoCategoria servicoCategoria) : Controller
 {
