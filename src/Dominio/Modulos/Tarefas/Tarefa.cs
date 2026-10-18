@@ -27,7 +27,7 @@ public class Tarefa : EntidadeBase<Tarefa>
                 Mensagem = "O campo \"Título\" deve conter entre 2 e 100 caracteres."
             });
         }
-        if (Enum.IsDefined(Prioridade))
+        if (!Enum.IsDefined(Prioridade))
         {
             erros.Add(new ErroValidacao
             {
