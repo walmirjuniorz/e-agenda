@@ -40,7 +40,7 @@ public class Tarefa : EntidadeBase<Tarefa>
 
         return true;
     }
-    public bool AdicionarConclusaoItem(Guid itemId, bool concluido)
+    public bool AlterarConclusaoItem(Guid itemId, bool concluido)
     {
         ItemTarefa? item = Itens.FirstOrDefault(i => i.Id == itemId);
 

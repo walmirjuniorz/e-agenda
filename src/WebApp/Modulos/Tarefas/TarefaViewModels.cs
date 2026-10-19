@@ -20,3 +20,27 @@ public record ExcluirTarefaViewModel(
     PrioridadeTarefa Prioridade,
     DateOnly DataCriacao
 );
+[ValidateNever]
+public record GerenciarItensTarefaViewModel(
+    Guid Id,
+    string Titulo,
+    PrioridadeTarefa Prioridade,
+    DateOnly DataCriacao,
+    DateOnly? DataConclusao,
+    int PercentualConcluido,
+    bool Concluida,
+    List<ItemTarefaViewModel> Itens
+);
+
+[ValidateNever]
+public record AdicionarItemTarefaViewModel(
+    Guid TarefaId,
+    string Titulo
+);
+
+[ValidateNever]
+public record ItemTarefaViewModel(
+    Guid Id,
+    string Titulo,
+    bool Concluido
+);
