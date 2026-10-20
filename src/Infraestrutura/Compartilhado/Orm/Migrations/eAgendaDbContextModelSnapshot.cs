@@ -55,6 +55,43 @@ namespace eAgenda.Infraestrutura.Compartilhado.Orm.Migrations
                     b.ToTable("TBCategorias", (string)null);
                 });
 
+            modelBuilder.Entity("eAgenda.Dominio.Modulos.Compromissos.Compromisso", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Assunto")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("DataOcorrencia")
+                        .HasColumnType("date");
+
+                    b.Property<TimeOnly>("HoraInicio")
+                        .HasColumnType("time");
+
+                    b.Property<TimeOnly>("HoraTermino")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Link")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Local")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoCompromissoEnum")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Assunto")
+                        .IsUnique();
+
+                    b.ToTable("TBCompromissos", (string)null);
+                });
+
             modelBuilder.Entity("eAgenda.Dominio.Modulos.Contatos.Contato", b =>
                 {
                     b.Property<Guid>("Id")
