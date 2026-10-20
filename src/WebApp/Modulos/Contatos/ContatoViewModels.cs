@@ -14,5 +14,5 @@ public record EditarContatoViewModel(
     [ValidateNever] string Telefone
 );
 public record ExcluirContatoViewModel(
-    Guid Id
+    Guid Id, string Nome, string Email, string Telefone
 );

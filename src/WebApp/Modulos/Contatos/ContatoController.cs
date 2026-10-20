@@ -102,7 +102,7 @@ namespace eAgenda.WebApp.Modulos.Contatos
 
             ContatoDto dto = resultado.Value;
 
-            ExcluirContatoViewModel viewModel = new(dto.Id);
+            ExcluirContatoViewModel viewModel = new(dto.Id, dto.Nome, dto.Email, dto.Telefone);
 
             return View(viewModel);
         }

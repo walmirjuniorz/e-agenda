@@ -39,14 +39,13 @@ public sealed class ServicoContato(IRepositorioContato repositorioContato)
 
         return Result.Ok(contato.Id);
     }
-
     public Result Editar(EditarContatoDto dto)
     {
         Contato contatoAtualizado = new(dto.Nome, dto.Email, dto.Telefone);
 
         List<ErroValidacao> erros = contatoAtualizado.Validar();
 
-        if (repositorioContato.ExisteContatoComEmail(contatoAtualizado.Email))
+        if (repositorioContato.ExisteContatoComEmail(contatoAtualizado.Email, dto.Id))
         {
             erros.Add(new ErroValidacao
             {
@@ -54,7 +53,7 @@ public sealed class ServicoContato(IRepositorioContato repositorioContato)
                 Mensagem = "Já existe um contato cadastrado com o e-mail informado."
             });
         }
-        if (repositorioContato.ExisteContatoComTelefone(contatoAtualizado.Telefone))
+        if (repositorioContato.ExisteContatoComTelefone(contatoAtualizado.Telefone, dto.Id))
         {
             erros.Add(new ErroValidacao
             {
@@ -80,7 +79,10 @@ public sealed class ServicoContato(IRepositorioContato repositorioContato)
 
     public Result Excluir(Guid id)
     {
+        bool conseguiuExcluir = repositorioContato.Excluir(id);
 
+        if (!conseguiuExcluir)
+            return Result.Fail("Não foi possível encontrar o contato informado.");
 
         return Result.Ok();
     }
@@ -90,7 +92,7 @@ public sealed class ServicoContato(IRepositorioContato repositorioContato)
         Contato? c = repositorioContato.SelecionarPorId(id);
 
         if (c == null)
-            return Result.Fail("Categoria não encontrada");
+            return Result.Fail("Contato não encontrado");
 
         return Result.Ok(new ContatoDto(c.Id, c.Nome, c.Email, c.Telefone));
     }
