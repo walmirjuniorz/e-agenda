@@ -6,3 +6,12 @@ public record ContatoDto(
     string Email,
     string Telefone
 );
+public record EditarContatoDto(
+    Guid Id,
+    string Nome,
+    string Email,
+    string Telefone
+);
+public record ExcluirContatoDto(
+    Guid Id
+);
