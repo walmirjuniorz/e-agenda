@@ -14,6 +14,41 @@ namespace eAgenda.WebApp.Modulos.Contatos
             return View(dtos);
         }
         [HttpGet]
+        public ActionResult Cadastrar()
+        {
+            CadastrarContatoViewModel viewModel = new(
+                string.Empty,
+                string.Empty,
+                string.Empty
+            );
+
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult Cadastrar(CadastrarContatoViewModel viewModel)
+        {
+            CadastrarContatoDto dto = new(
+                viewModel.Nome ?? string.Empty,
+                viewModel.Email ?? string.Empty,
+                viewModel.Telefone ?? string.Empty
+                );
+
+            Result<Guid> resultado = servicoContato.Cadastrar(dto);
+
+            if (resultado.IsFailed)
+            {
+                foreach (var erro in resultado.Errors)
+                {
+                    string campo = erro.Metadata["Campo"].ToString() ?? string.Empty;
+
+                    ModelState.AddModelError(campo, erro.Message);
+                }
+                return View(viewModel);
+            }
+
+            return RedirectToAction(nameof(Listar));
+        }
+        [HttpGet]
         public ActionResult Editar(Guid id)
         {
             Result<ContatoDto> resultado = servicoContato.SelecionarPorId(id);

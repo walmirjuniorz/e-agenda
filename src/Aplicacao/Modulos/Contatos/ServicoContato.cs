@@ -5,6 +5,41 @@ using FluentResults;
 
 public sealed class ServicoContato(IRepositorioContato repositorioContato)
 {
+    public Result<Guid> Cadastrar(CadastrarContatoDto dto)
+    {
+        Contato contato = new Contato(dto.Nome, dto.Email, dto.Telefone);
+
+        List<ErroValidacao> erros = contato.Validar();
+
+        if (repositorioContato.ExisteContatoComEmail(contato.Email))
+        {
+            erros.Add(new ErroValidacao
+            {
+                Campo = nameof(dto.Email),
+                Mensagem = "Já existe um contato cadastrado com o e-mail informado."
+            });
+        }
+        if (repositorioContato.ExisteContatoComTelefone(contato.Telefone))
+        {
+            erros.Add(new ErroValidacao
+            {
+                Campo = nameof(dto.Telefone),
+                Mensagem = "Já existe um contato cadastrado com o telefone informado."
+            });
+        }
+        if (erros.Count > 0)
+        {
+            List<Error> errosResultado = erros
+            .Select(e => new Error(e.Mensagem).WithMetadata("Campo", e.Campo)).ToList();
+
+            return Result.Fail(errosResultado);
+        }
+
+        repositorioContato.Cadastrar(contato);
+
+        return Result.Ok(contato.Id);
+    }
+
     public Result Editar(EditarContatoDto dto)
     {
         Contato contatoAtualizado = new(dto.Nome, dto.Email, dto.Telefone);
@@ -16,7 +51,7 @@ public sealed class ServicoContato(IRepositorioContato repositorioContato)
             erros.Add(new ErroValidacao
             {
                 Campo = nameof(dto.Email),
-                Mensagem = "Já existe um contato cadastrada com o email informado."
+                Mensagem = "Já existe um contato cadastrado com o e-mail informado."
             });
         }
         if (repositorioContato.ExisteContatoComTelefone(contatoAtualizado.Telefone))
@@ -24,7 +59,7 @@ public sealed class ServicoContato(IRepositorioContato repositorioContato)
             erros.Add(new ErroValidacao
             {
                 Campo = nameof(dto.Telefone),
-                Mensagem = "Já existe um contato cadastrada com o telefone informado."
+                Mensagem = "Já existe um contato cadastrado com o telefone informado."
             });
         }
         if (erros.Count > 0)

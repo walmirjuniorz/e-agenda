@@ -1,3 +1,4 @@
+@using eAgenda.Dominio.Modulos.Contatos
 @{
     Layout = "_Layout";
     ViewBag.Titulo = "Listagem de Contatos";
@@ -5,10 +6,12 @@
 
 @model List<ContatoDto>;
 
+<a class="btn btn-outline-primary rounded-pill px-4 mb-3" asp-action="Cadastrar">Cadastrar Novo</a>
+
 @if (Model.Count == 0)
 {
     <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
-        Nenhuma categoria cadastrada.
+        Nenhuma contato cadastrado.
     </div>
 }
 else
@@ -22,6 +25,14 @@ else
                         <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
                             <h5 class="card-title mb-0">@c.Nome</h5>
                             <span class="badge text-bg-primary rounded-pill">@c.Id.ToString(format: "N")[..8]</span>
+                        </div>
+
+                        <div class="row mb-2">
+                            <dt class="col-sm-4">E-mail</dt>
+                            <dd class="col-sm-8">@c.Email</dd>
+
+                            <dt class="col-sm-4">Telefone</dt>
+                            <dd class="col-sm-8">@c.Telefone</dd>
                         </div>
 
                         <div class="d-flex flex-wrap gap-2 mt-auto justify-content-end">

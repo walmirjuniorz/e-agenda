@@ -52,7 +52,7 @@ public class Contato : EntidadeBase<Contato>
             erros.Add(new ErroValidacao
             {
                 Campo = nameof(Telefone),
-                Mensagem = "O campo \"Telefone\" deve conter um e-mail válido."
+                Mensagem = "O campo \"Telefone\" deve estar no formato (00) 0000-0000 ou (00) 00000-0000."
             }
             );
         }
