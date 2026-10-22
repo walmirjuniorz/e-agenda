@@ -84,6 +84,15 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_35AB928F4CAF49DF93C06C700C816227 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_00041C2994FF4885A751F44B15A21F30 }}
 
+      - name: Configure Azure Web App settings
+        shell: pwsh
+        run: |
+          az webapp config appsettings set `
+            --resource-group "eagenda" `
+            --name "e-Agenda-walmirjuniorz" `
+            --settings `
+              "ConnectionsStrings__SqlServer=${{secrets.SQLSERVER_CONNECTIONSTRING}}"
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
