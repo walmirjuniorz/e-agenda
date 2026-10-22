@@ -2,152 +2,71 @@
 
 ## Projeto
 
-Desenvolvido durante o curso Backend da [Academia do Programador](https://www.academiadoprogramador.net) 2026
+O e-Agenda é um sistema web desenvolvido para auxiliar no gerenciamento de contatos, compromissos, categorias, despesas e tarefas. O sistema centraliza informações e permite organizar diferentes atividades do dia a dia em um único ambiente.
+
+A aplicação possui módulos para gerenciamento de contatos, compromissos, categorias, despesas e tarefas, permitindo cadastrar, visualizar, editar e excluir registros. Também conta com recursos para organização de tarefas por prioridade e status, além do gerenciamento de itens pertencentes a cada tarefa.
+
+O projeto possui regras de negócio para garantir a integridade das informações, como a validação de dados obrigatórios, identificação de registros duplicados, controle de conflitos de horários entre compromissos e validação de relacionamentos entre os diferentes módulos.
 
 ## Funcionalidades
 
-### 1. Módulo de Contatos
+### Contatos
 
-Requisitos Funcionais
+- Cadastro, visualização, edição e exclusão de contatos
+- Validação de nome, email e telefone
+- Validação de email e telefone únicos
+- Cadastro opcional de cargo e empresa
+- Impedimento da exclusão de contatos vinculados a compromissos
 
-- O sistema deve permitir a inserção de novos contatos
-- O sistema deve permitir a edição de contatos já cadastrados
-- O sistema deve permitir excluir contatos já cadastrados
-- O sistema deve permitir visualizar contatos cadastrados
+### Compromissos
 
-Regras de Negócio
+- Cadastro, visualização, edição e exclusão de compromissos
+- Cadastro de assunto, data e horários
+- Definição do tipo de compromisso como presencial ou remoto
+- Cadastro de local para compromissos presenciais
+- Cadastro de link para compromissos remotos
+- Associação opcional com contatos
+- Validação de conflitos de horários
 
-Campos obrigatórios:
+### Categorias
 
-- Nome (2-100 caracteres)
-- Email (formato válido)
-- Telefone (formato validado: (XX) XXXX-XXXX ou (XX) XXXXX-XXXX)
-- Cargo (opcional)
-- Empresa (opcional)
+- Cadastro, visualização, edição e exclusão de categorias
+- Validação de título único
+- Associação de despesas às categorias
+- Visualização das despesas pertencentes a uma categoria
+- Impedimento da exclusão de categorias relacionadas a despesas
 
-- Não pode haver contatos com o mesmo email e/ou telefone.
-- Não permitir excluir um contato caso tenha compromissos vinculados
+### Despesas
 
-### 2. Módulo de Compromissos
+- Cadastro, visualização, edição e exclusão de despesas
+- Cadastro de descrição, data e valor
+- Definição da forma de pagamento
+- Associação de uma ou mais categorias
+- Data de ocorrência opcional, utilizando a data de cadastro como padrão
 
-Requisitos Funcionais
+### Tarefas
 
-- O sistema deve permitir a inserção de novos compromissos
-- O sistema deve permitir a edição de compromissos já cadastrados
-- O sistema deve permitir excluir compromissos já cadastrados
-- O sistema deve permitir visualizar compromissos cadastrados
+- Cadastro, visualização, edição e exclusão de tarefas
+- Controle de prioridade
+- Controle de status de conclusão
+- Controle do percentual de conclusão
+- Visualização de tarefas pendentes e concluídas
+- Visualização de tarefas agrupadas por prioridade
+- Cadastro opcional de itens de tarefa
 
-Regras de Negócio
+### Itens de Tarefas
 
-Campos obrigatórios:
+- Adição e remoção de itens em tarefas
+- Controle do status de conclusão dos itens
+- Atualização do percentual de conclusão da tarefa conforme os itens concluídos
 
-- Assunto (2-100 caracteres)
-- Data de Ocorrência
-- Hora de Início
-- Hora de Término
-- Tipo de Compromisso (Remoto ou Presencial)
-- Local (caso presencial)
-- Link (caso remoto)
-- Contato (opcional)
+### Tecnologias utilizadas
 
-- Não pode haver conflito de horários entre compromissos
+- C#
+- ASP.NET Core MVC
+- CSS / CSHTML
+- Bootstrap
+- SQL Server
+- Entity Framework Core
 
-### 3. Módulo de Categorias
-
-Requisitos Funcionais
-
-- O sistema deve permitir cadastrar novas categorias
-- O sistema deve permitir editar categorias existentes
-- O sistema deve permitir excluir categorias
-- O sistema deve permitir visualizar todas as categorias
-- O sistema deve permitir visualizar todas as despesas pertencentes a uma categoria
-  específica
-
-Regras de Negócio
-
-Campos obrigatórios:
-
-- Título (2-100 caracteres)
-- Despesas (cadastradas posteriormente)
-- Não pode haver categorias com mesmo título
-- Não deve permitir excluir categorias relacionadas a despesas.
-
-### 4. Módulo de Despesas
-
-Requisitos Funcionais
-
-- O sistema deve permitir cadastrar novas despesas
-- O sistema deve permitir editar despesas existentes
-- O sistema deve permitir excluir despesas
-- O sistema deve permitir visualizar todas as despesas
-
-Regras de Negócio
-
-Campos obrigatórios:
-
-- Descrição (2-100 caracteres)
-- Data de Ocorrência (opcional, data de cadastro por padrão)
-- Valor (R$)
-- Forma de Pagamento (À Vista, Crédito ou Débito),
-- Categorias (1 ou mais categorias)
-
-### 5. Módulo de Tarefas
-
-Requisitos Funcionais
-
-- O sistema deve permitir cadastrar novas tarefas
-- O sistema deve permitir editar tarefas existentes
-- O sistema deve permitir excluir tarefas
-- O sistema deve permitir visualizar todas as tarefas, as tarefas pendentes e as
-  tarefas concluídas
-- O sistema deve permitir visualizar as tarefas agrupadas por prioridade
-
-Regras de Negócio
-
-Campos obrigatórios:
-
-- Título (2-100 caracteres)
-- Prioridade (Baixa, Normal, Alta)
-- Data de Criação
-- Data de Conclusão
-- Status de Conclusão
-- Percentual Concluído,
-- Itens da Tarefa (opcionais)
-
-### 5.1 Itens de Tarefas
-
-Requisitos Funcionais
-
-- O sistema deve permitir adicionar ou remover itens em uma determinada tarefa
-- O sistema deve permitir concluir itens de tarefas, alterando o percentual (%) de
-  conclusão da tarefa.
-
-Regras de Negócio:
-
-Campos obrigatórios:
-
-- Título (2-100 caracteres)
-- Status de Conclusão
-- Tarefa
-
----
-
-## Como utilizar
-
-1. Clone o repositório ou baixe o código fonte.
-2. Abra o terminal ou o prompt de comando e navegue até a pasta raiz
-3. Utilize o comando abaixo para restaurar as dependências do projeto.
-
-   ```bash
-   dotnet restore
-   ```
-
-4. Para executar o projeto compilando em tempo real
-
-   ```bash
-   dotnet run --project src/eAgenda.WebApp
-   ```
-
-## Requisitos
-
-- .NET 10.0 SDK
+Desenvolvido durante o curso Backend da [Academia do Programador](https://www.academiadoprogramador.net/) 2026
