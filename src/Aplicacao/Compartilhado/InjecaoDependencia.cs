@@ -10,6 +10,7 @@ public static class InjecaoDependencia
     public static void AdicionarCamadaAplicacao(this IServiceCollection services)
     {
         services.AddScoped<ServicoContato>();
+        services.AddScoped<ServicoCompromisso>();
         services.AddScoped<ServicoCategoria>();
         services.AddScoped<ServicoDespesa>();
         services.AddScoped<ServicoTarefa>();

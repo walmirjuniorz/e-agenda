@@ -86,7 +86,6 @@ public sealed class ServicoContato(IRepositorioContato repositorioContato)
 
         return Result.Ok();
     }
-
     public Result<ContatoDto> SelecionarPorId(Guid id)
     {
         Contato? c = repositorioContato.SelecionarPorId(id);
@@ -96,7 +95,6 @@ public sealed class ServicoContato(IRepositorioContato repositorioContato)
 
         return Result.Ok(new ContatoDto(c.Id, c.Nome, c.Email, c.Telefone));
     }
-
     public List<ContatoDto> SelecionarTodos()
     {
         List<Contato> contatos = repositorioContato.SelecionarTodos();

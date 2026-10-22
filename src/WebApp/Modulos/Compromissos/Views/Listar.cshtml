@@ -1,0 +1,70 @@
+@{
+    Layout = "_Layout";
+    ViewBag.Titulo = "Listagem de Compromissos";
+}
+
+@model List<CompromissoDto>;
+
+<a class="btn btn-outline-primary rounded-pill px-4 mb-3" asp-action="Cadastrar">Cadastrar Novo</a>
+
+@if (!string.IsNullOrWhiteSpace(TempData["MensagemErro"]?.ToString()))
+{
+    <div class="alert alert-danger border-start border-danger border-4 rounded-3" role="alert">
+        @TempData["MensagemErro"]!.ToString()
+    </div>
+}
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
+        Nenhum compromisso cadastrado.
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-2">
+        @foreach (CompromissoDto t in Model)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+
+                            <div class="d-flex flex-column gap-1">
+                                <div class="d-flex gap-2 my-0">
+                                </div>
+                                <h5 class="card-title mb-0">@t.Assunto</h5>
+                            </div>
+
+                            <span class="badge text-bg-primary rounded-pill">@t.TipoCompromissoEnum.ToString()</span>
+                        </div>
+
+                        <dl class="row g-2 mb-4">
+                            <dt class="col-5 text-secondary fw-semibold">Data de Criação</dt>
+                            <dd class="col-7 mb-0 ">@t.DataOcorrencia.ToShortDateString()</dd>
+
+                            <dt class="col-5 text-secondary fw-semibold">Hora de Início</dt>
+                            <dd class="col-7 mb-0">@t.HoraInicio.ToShortTimeString()</dd>
+
+                            <dt class="col-5 text-secondary fw-semibold">Hora de Término</dt>
+                            <dd class="col-7 mb-0">@t.HoraTermino.ToShortTimeString()</dd>
+
+                            <dt class="col-5 text-secondary fw-semibold">Local</dt>
+                            <dd class="col-7 mb-0">@t.Local?.ToString()</dd>
+
+                            <dt class="col-5 text-secondary fw-semibold">Link</dt>
+                            <dd class="col-7 mb-0">@t.Link?.ToString()</dd>
+                        </dl>
+
+                        <div class="d-flex flex-wrap gap-2 mt-auto justify-content-end">
+                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3" asp-action="Editar"
+                               asp-route-id="@t.Id">Editar</a>
+                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3" asp-action="Excluir"
+                               asp-route-id="@t.Id">Excluir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

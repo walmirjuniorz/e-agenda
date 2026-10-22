@@ -5,21 +5,21 @@ namespace eAgenda.Dominio.Modulos.Compromissos;
 public partial class Compromisso : EntidadeBase<Compromisso>
 {
     public string Assunto { get; set; } = string.Empty;
-    public DateTime DataOcorrencia { get; set; }
+    public DateOnly DataOcorrencia { get; set; }
     public TimeOnly HoraInicio { get; set; }
     public TimeOnly HoraTermino { get; set; }
     public TipoCompromisso TipoCompromissoEnum { get; set; }
     public string Link { get; set; } = string.Empty;
     public string Local { get; set; } = string.Empty;
-    public Compromisso(string assunto, DateTime dataOcorrencia, TimeOnly horaInicio, TimeOnly horaTermino, TipoCompromisso tipoCompromissoEnum, string link, string local)
+    public Compromisso(string assunto, DateOnly dataOcorrencia, TimeOnly horaInicio, TimeOnly horaTermino, TipoCompromisso tipoCompromissoEnum, string? link, string? local)
     {
         Assunto = assunto;
         DataOcorrencia = dataOcorrencia;
         HoraInicio = horaInicio;
         HoraTermino = horaTermino;
         TipoCompromissoEnum = tipoCompromissoEnum;
-        Link = link;
-        Local = local;
+        Link = link!;
+        Local = local!;
     }
     public Compromisso() { }
 
@@ -52,6 +52,22 @@ public partial class Compromisso : EntidadeBase<Compromisso>
             {
                 Campo = nameof(TipoCompromissoEnum),
                 Mensagem = "O campo \"Tipo de Compromisso\" deve ser preenchido."
+            });
+        }
+        if (TipoCompromissoEnum == TipoCompromisso.Remoto && string.IsNullOrWhiteSpace(Link))
+        {
+            erros.Add(new ErroValidacao
+            {
+                Campo = nameof(Link),
+                Mensagem = "O link deve ser preenchido para compromissos remotos."
+            });
+        }
+        if (TipoCompromissoEnum == TipoCompromisso.Presencial && string.IsNullOrWhiteSpace(Local))
+        {
+            erros.Add(new ErroValidacao
+            {
+                Campo = nameof(Local),
+                Mensagem = "O local deve ser preenchido para compromissos presenciais."
             });
         }
         if (HoraInicio >= HoraTermino)
