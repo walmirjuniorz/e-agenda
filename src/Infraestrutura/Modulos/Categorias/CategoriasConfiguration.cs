@@ -1,4 +1,5 @@
 using eAgenda.Dominio.Modulos.Categorias;
+using eAgenda.Infraestrutura.Compartilhado.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,8 +14,19 @@ public sealed class CategoriaConfiguration : IEntityTypeConfiguration<Categoria>
         builder.HasKey(c => c.Id);
         builder.Property(c => c.Id).ValueGeneratedNever();
 
-        builder.Property(c => c.Titulo).HasMaxLength(100).IsRequired();
+        builder.Property(c => c.Titulo)
+            .HasMaxLength(100)
+            .IsRequired();
 
-        builder.HasIndex(c => c.Titulo).IsUnique();
+        // Índice composto
+        // para o Usuario João, o título é único
+        // para outro usuário não
+        builder.HasIndex(c => new { c.UsuarioId, c.Titulo })
+            .IsUnique();
+
+        builder.HasOne<UsuarioIdentity>()
+            .WithMany()
+            .HasForeignKey(c => c.UsuarioId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
