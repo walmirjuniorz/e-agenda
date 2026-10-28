@@ -2,11 +2,13 @@ using eAgenda.Dominio.Modulos.Categorias;
 using eAgenda.Dominio.Modulos.Contatos;
 using eAgenda.Dominio.Modulos.Despesas;
 using eAgenda.Dominio.Modulos.Tarefas;
+using eAgenda.Infraestrutura.Compartilhado.Identity;
 using eAgenda.Infraestrutura.Compartilhado.Orm;
 using eAgenda.Infraestrutura.Modulos.Categorias;
 using eAgenda.Infraestrutura.Modulos.Compromissos;
 using eAgenda.Infraestrutura.Modulos.Despesas;
 using eAgenda.Infraestrutura.Modulos.Tarefas;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +28,9 @@ public static class injecaoDependencia
 
             options.UseSqlServer(connectionString, cfg => cfg.EnableRetryOnFailure(3));
         });
+
+
+
         services.AddScoped<IRepositorioContato, RepositorioContatoEmOrm>();
         services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoEmOrm>();
         services.AddScoped<IRepositorioCategoria, RepositorioCategoriaEmOrm>();
