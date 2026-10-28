@@ -26,6 +26,8 @@ public sealed class eAgendaDbContext(DbContextOptions<eAgendaDbContext> options)
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.ApplyConfiguration(new ContatoConfiguration());
         modelBuilder.ApplyConfiguration(new CompromissoConfiguration());
         modelBuilder.ApplyConfiguration(new CategoriaConfiguration());

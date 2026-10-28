@@ -27,5 +27,5 @@ public sealed record LoginUsuarioViewModel(
     string Senha,
 
     bool LembrarMe,
-    string? ReturnIrl
+    string? ReturnUrl
 );

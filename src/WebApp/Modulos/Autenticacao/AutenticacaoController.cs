@@ -30,7 +30,7 @@ public class AutenticacaoController(
         // Operação assíncrona
         IdentityResult resultado = await userManager.CreateAsync(usuario, viewModel.Senha);
 
-        if (resultado.Succeeded)
+        if (!resultado.Succeeded)
         {
             foreach (IdentityError erro in resultado.Errors)
                 ModelState.AddModelError(string.Empty, erro.Description);
@@ -41,13 +41,13 @@ public class AutenticacaoController(
         return RedirectToAction(nameof(Login));
     }
     [HttpGet]
-    public ActionResult Login(string? returnIrl = null)
+    public ActionResult Login(string? returnUrl = null)
     {
         LoginUsuarioViewModel viewModel = new(
             string.Empty,
             string.Empty,
             false,
-            returnIrl
+            returnUrl
         );
 
         return View(viewModel);
@@ -67,13 +67,20 @@ public class AutenticacaoController(
 
         if (resultado.Succeeded)
         {
-            return Url.IsLocalUrl(viewModel.ReturnIrl)
-            ? LocalRedirect(viewModel.ReturnIrl)
+            return Url.IsLocalUrl(viewModel.ReturnUrl)
+            ? LocalRedirect(viewModel.ReturnUrl!)
             : RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         ModelState.AddModelError(string.Empty, "E-mail ou senha inválidos.");
 
         return View(viewModel);
+    }
+    [HttpPost]
+    public async Task<ActionResult> Logout()
+    {
+        await signManager.SignOutAsync();
+
+        return RedirectToAction(nameof(Login));
     }
 }

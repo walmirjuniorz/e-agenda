@@ -1,19 +1,20 @@
 @{
-    Layout = "Layout";
+    Layout = "_Layout";
     ViewBag.Titulo = "Login de usuário";
 }
 
 @model LoginUsuarioViewModel;
 
-<form class="card p-4 mc-auto" style="max-width: 480px" asp-controller="Autenticacao" asp-action="Login" method="post">
-    <div class="text-danger" asp-asp-validation-summary="All"></div>
+<form class="card p-4 mx-auto" style="max-width: 480px" asp-controller="Autenticacao" asp-action="Login" method="post">
+    <div class="text-danger" asp-validation-summary="All"></div>
+    <input type="hidden" asp-for="ReturnUrl">
 
     <label class="form-label" asp-for="Email">E-mail</label>
     <input class="form-control mb-3" asp-for="Email" autocomplete="email">
 
 
     <label class="form-label" asp-for="Senha">Senha</label>
-    <input class="form-control mb-3" asp-for="Senha" autocomplete="current-password">
+    <input class="form-control mb-3" asp-for="Senha" type="password" autocomplete="current-password">
 
     <div class="form-check mb-3">
         <input class="form-check-input" asp-for="LembrarMe">
