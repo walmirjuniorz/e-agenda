@@ -1,11 +1,14 @@
 using eAgenda.Aplicacao.Modulos.Categorias;
+using eAgenda.Dominio.Compartilhado;
 using eAgenda.WebApp.Modulos.Categorias;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eAgenda.WebApp.Modulos.Categorias;
 
-public sealed class CategoriaController(ServicoCategoria servicoCategoria) : Controller
+public sealed class CategoriaController(
+    ServicoCategoria servicoCategoria,
+    IProvedorUsuarioAtual usuarioAtual) : Controller
 {
     [HttpGet]
     public ActionResult Listar()
@@ -24,7 +27,10 @@ public sealed class CategoriaController(ServicoCategoria servicoCategoria) : Con
     [HttpPost]
     public ActionResult Cadastrar(CadastrarCategoriaViewModel viewModel)
     {
-        CadastrarCategoriaDto dto = new(viewModel.Titulo ?? string.Empty);
+        CadastrarCategoriaDto dto = new(
+            usuarioAtual.Id,
+            viewModel.Titulo ?? string.Empty
+            );
 
         Result<Guid> resultado = servicoCategoria.Cadastrar(dto);
 

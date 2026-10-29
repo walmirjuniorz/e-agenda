@@ -8,8 +8,9 @@ public sealed class Categoria : EntidadeBase<Categoria>
     public string Titulo { get; set; } = string.Empty;
     public List<Despesa> Despesas { get; set; } = [];
     public Categoria() { }
-    public Categoria(string titulo) : this()
+    public Categoria(Guid usuarioId, string titulo) : this()
     {
+        UsuarioId = usuarioId;
         Titulo = titulo;
     }
 
