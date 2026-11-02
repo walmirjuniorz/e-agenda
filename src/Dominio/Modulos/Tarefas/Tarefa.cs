@@ -18,7 +18,6 @@ public class Tarefa : EntidadeBase<Tarefa>
     {
         Titulo = titulo;
         Prioridade = prioridade;
-
         RecalcularConclusao();
     }
     public void AdicionarItem(ItemTarefa item)
