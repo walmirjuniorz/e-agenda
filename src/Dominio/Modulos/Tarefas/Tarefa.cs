@@ -55,7 +55,7 @@ public class Tarefa : EntidadeBase<Tarefa>
 
         return true;
     }
-    public void RecalcularConclusao()
+    private void RecalcularConclusao()
     {
         if (Itens.Count == 0)
         {
