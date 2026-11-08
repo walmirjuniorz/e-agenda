@@ -1,4 +1,3 @@
-using System.Net;
 using eAgenda.Aplicacao.Compartilhado;
 using eAgenda.Dominio.Compartilhado;
 using eAgenda.Infraestrutura.Compartilhado;

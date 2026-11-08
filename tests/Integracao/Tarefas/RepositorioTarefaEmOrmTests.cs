@@ -1,52 +1,12 @@
-﻿using System.Data.Common;
-using eAgenda.Dominio.Modulos.Tarefas;
-using eAgenda.Infraestrutura.Compartilhado.Identity;
-using eAgenda.Infraestrutura.Compartilhado.Orm;
+﻿using eAgenda.Dominio.Modulos.Tarefas;
 using eAgenda.Infraestrutura.Modulos.Tarefas;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
-namespace eAgenda.Testes.Integracao.Compartilhado;
+namespace eAgenda.Testes.Integracao.Tarefas;
 
 [TestClass]
-public sealed partial class RepositorioTarefaEmOrmTests
+public sealed partial class RepositorioTarefaEmOrmTests : RepositorioEmOrmTestsBase
 {
-    private static string? connectionString = null;
-    private Guid usuarioId = Guid.Empty;
-    private eAgendaDbContext dbContext = null!;
-    private RepositorioTarefaEmOrm repositorioTarefa = null!;
-    private string connectionStringTeste = null!;
-    [ClassInitialize]
-    public static void InicializarClasse(TestContext testContext)
-    {
-        IConfiguration configuration = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false)
-            .AddUserSecrets("96cee23d-32f5-4420-8ec2-6e965d8f8908")
-            .Build();
 
-        connectionString = configuration.GetConnectionString("SqlServer")
-            ?? Environment.GetEnvironmentVariable("ConnectionStrings__SqlServer");
-
-        if (string.IsNullOrWhiteSpace(connectionString))
-            Assert.Inconclusive("Configure ConnectionStrings:SqlServer nos User Secrets do WebApp ou na variável de ambiente ConnectionStrings__SqlServer.");
-    }
-    [TestInitialize]
-    public void InicializarTeste()
-    {
-        usuarioId = Guid.CreateVersion7();
-        connectionStringTeste = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(connectionString)
-        {
-            InitialCatalog = $"eAgenda_Testes_{Guid.NewGuid():N}"
-        }.ConnectionString;
-        dbContext = CriarContexto(usuarioId, connectionStringTeste);
-        repositorioTarefa = new RepositorioTarefaEmOrm(dbContext);
-
-        dbContext.Database.EnsureCreated();
-
-        CriarUsuario(dbContext, usuarioId);
-    }
     [TestMethod]
     public void Cadastrar_DevePersistir_TarefaEItensNoBanco()
     {
@@ -63,7 +23,9 @@ public sealed partial class RepositorioTarefaEmOrmTests
         tarefa.AdicionarItem(new ItemTarefa(tarefa, "Revisar conteúdo") { UsuarioId = usuarioId });
         tarefa.AdicionarItem(new ItemTarefa(tarefa, "Montar slides") { UsuarioId = usuarioId, Concluido = true });
 
+        RepositorioTarefaEmOrm repositorioTarefa = new RepositorioTarefaEmOrm(dbContext);
         // Ação
+
         repositorioTarefa.Cadastrar(tarefa);
         dbContext.ChangeTracker.Clear();
 
@@ -82,34 +44,24 @@ public sealed partial class RepositorioTarefaEmOrmTests
             tarefaSelecionada.Itens.Select(i => i.Titulo).ToArray()
         );
     }
-    [TestCleanup]
-    public void FinalizarTeste()
+    [TestMethod]
+    public void Editar_DeveAtualizar_TarefaEItensNoBanco()
     {
-        dbContext.Database.EnsureDeleted();
-        dbContext.Dispose();
+        // Arranjo
+
+        // Açao
+
+        // Asserção
+
     }
-
-    private static eAgendaDbContext CriarContexto(Guid usuarioId, string connectionString)
+    [TestMethod]
+    public void Excluir_DeveApagar_TarefaEItensNoBanco()
     {
-        DbContextOptions<eAgendaDbContext> options = new DbContextOptionsBuilder<eAgendaDbContext>()
-            .UseSqlServer(connectionString)
-            .Options;
+        // Arranjo
 
-        return new eAgendaDbContext(options, new ProvedorUsuarioAtualFake(usuarioId));
-    }
-    private static void CriarUsuario(eAgendaDbContext dbContext, Guid usuarioId)
-    {
-        dbContext.Users.Add(new UsuarioIdentity
-        {
-            Id = usuarioId,
-            UserName = $"integracao-{usuarioId:N}",
-            NormalizedUserName = $"INTEGRACAO-{usuarioId:N}",
-            Email = $"{usuarioId:N}@test.local",
-            NormalizedEmail = $"{usuarioId:N}@TEST.LOCAL",
-            EmailConfirmed = true,
-            SecurityStamp = Guid.NewGuid().ToString()
-        });
+        // Açao
 
-        dbContext.SaveChanges();
+        // Asserção
+
     }
 }

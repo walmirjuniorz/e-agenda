@@ -1,6 +1,5 @@
 using eAgenda.Aplicacao.Modulos.Categorias;
 using eAgenda.Dominio.Compartilhado;
-using eAgenda.WebApp.Modulos.Categorias;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 
