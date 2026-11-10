@@ -82,7 +82,7 @@ public sealed class ServicoCompromisso(IRepositorioCompromisso repositorioCompro
             c.DataOcorrencia,
             c.HoraInicio,
             c.HoraTermino,
-            c.TipoCompromissoEnum,
+            c.TipoCompromisso,
             c.Link,
             c.Local
         );
@@ -98,7 +98,7 @@ public sealed class ServicoCompromisso(IRepositorioCompromisso repositorioCompro
                 c.DataOcorrencia,
                 c.HoraInicio,
                 c.HoraTermino,
-                c.TipoCompromissoEnum,
+                c.TipoCompromisso,
                 c.Link,
                 c.Local
                 ))

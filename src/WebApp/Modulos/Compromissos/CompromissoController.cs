@@ -20,7 +20,7 @@ public class CompromissoController(ServicoCompromisso servicoCompromisso) : Cont
             DateOnly.FromDateTime(DateTime.Today),
             TimeOnly.MinValue,
             TimeOnly.MinValue,
-            Compromisso.TipoCompromisso.Presencial,
+            TipoCompromisso.Presencial,
             string.Empty,
             string.Empty
         );

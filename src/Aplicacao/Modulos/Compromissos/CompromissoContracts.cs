@@ -1,4 +1,4 @@
-using static eAgenda.Dominio.Modulos.Compromissos.Compromisso;
+using eAgenda.Dominio.Modulos.Compromissos;
 
 public record CompromissoDto(
     Guid Id,

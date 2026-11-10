@@ -31,7 +31,7 @@ public sealed class CompromissoConfiguration : IEntityTypeConfiguration<Compromi
             .HasColumnType("time")
             .IsRequired();
 
-        builder.Property(c => c.TipoCompromissoEnum)
+        builder.Property(c => c.TipoCompromisso)
             .HasConversion<string>()
             .IsRequired();
 
