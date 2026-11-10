@@ -44,4 +44,24 @@ public sealed class RepositorioCompromissoEmOrmTests : RepositorioEmOrmTestsBase
         Assert.IsNotNull(compromissoSelecionado.Link);
         Assert.AreEqual("www.test.com", compromissoSelecionado.Link);
     }
+    [TestMethod]
+    public void Editar_DeveAtualizar_CompromissoNoBanco()
+    {
+        // Arranjo
+
+        // Ação
+
+        // Asserção
+
+    }
+    [TestMethod]
+    public void Excluir_DeveApagar_CompromissoNoBanco()
+    {
+        // Arranjo
+
+        // Ação
+
+        // Asserção
+
+    }
 }
