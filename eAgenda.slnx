@@ -9,4 +9,9 @@
     <Project Path="tests/Integracao/eAgenda.Testes.Integracao.csproj" />
     <Project Path="tests/Unidade/eAgenda.Testes.Unidade.csproj" />
   </Folder>
+  <Folder Name="/tests/e2e/" />
+  <Folder Name="/tests/e2e/Modulos/" />
+  <Folder Name="/tests/e2e/Modulos/Tarefas/">
+    <Project Path="tests/e2e/Tarefae2eTests.csproj" />
+  </Folder>
 </Solution>
