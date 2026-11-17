@@ -32,6 +32,7 @@ public sealed class CompromissoConfiguration : IEntityTypeConfiguration<Compromi
             .IsRequired();
 
         builder.Property(c => c.TipoCompromisso)
+            .HasColumnName("TipoCompromissoEnum")
             .HasConversion<string>()
             .IsRequired();
 

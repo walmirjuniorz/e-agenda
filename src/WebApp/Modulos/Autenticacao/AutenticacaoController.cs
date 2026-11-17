@@ -75,12 +75,18 @@ public class AutenticacaoController(
         if (!ModelState.IsValid)
             return View(viewModel);
 
-        Microsoft.AspNetCore.Identity.SignInResult resultado = await signManager.PasswordSignInAsync(
-            viewModel.Email.Trim(),
-            viewModel.Senha,
-            viewModel.LembrarMe,
-            lockoutOnFailure: true
-        );
+        string email = viewModel.Email.Trim();
+        UsuarioIdentity? usuario = await userManager.FindByEmailAsync(email)
+            ?? await userManager.FindByNameAsync(email);
+
+        Microsoft.AspNetCore.Identity.SignInResult resultado = usuario is null
+            ? Microsoft.AspNetCore.Identity.SignInResult.Failed
+            : await signManager.PasswordSignInAsync(
+                usuario,
+                viewModel.Senha,
+                viewModel.LembrarMe,
+                lockoutOnFailure: true
+            );
 
         if (resultado.Succeeded)
         {
