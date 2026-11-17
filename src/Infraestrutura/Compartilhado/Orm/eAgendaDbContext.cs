@@ -21,6 +21,8 @@ public sealed class eAgendaDbContext(
     IdentityRole<Guid>,
     Guid>(options)
 {
+    public Guid UsuarioAtualId => usuarioAtual.Id;
+
     public DbSet<Contato> Contatos => Set<Contato>();
     public DbSet<Compromisso> Compromissos => Set<Compromisso>();
     public DbSet<Categoria> Categorias => Set<Categoria>();
@@ -39,7 +41,41 @@ public sealed class eAgendaDbContext(
         modelBuilder.ApplyConfiguration(new TarefaConfiguration());
         modelBuilder.ApplyConfiguration(new ItemTarefaConfiguration());
 
-        // QuerryFilter aplica um filtro global
-        modelBuilder.Entity<Categoria>().HasQueryFilter(c => c.UsuarioId == usuarioAtual.Id);
+        modelBuilder.Entity<Contato>().HasQueryFilter(c => c.UsuarioId == UsuarioAtualId);
+        modelBuilder.Entity<Compromisso>().HasQueryFilter(c => c.UsuarioId == UsuarioAtualId);
+        modelBuilder.Entity<Categoria>().HasQueryFilter(c => c.UsuarioId == UsuarioAtualId);
+        modelBuilder.Entity<Despesa>().HasQueryFilter(d => d.UsuarioId == UsuarioAtualId);
+        modelBuilder.Entity<Tarefa>().HasQueryFilter(t => t.UsuarioId == UsuarioAtualId);
+        modelBuilder.Entity<ItemTarefa>().HasQueryFilter(i => i.UsuarioId == UsuarioAtualId);
+    }
+
+    public override int SaveChanges() => SaveChanges(true);
+
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        DefinirUsuarioNasEntidadesNovas();
+
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
+        SaveChangesAsync(true, cancellationToken);
+
+    public override Task<int> SaveChangesAsync(
+        bool acceptAllChangesOnSuccess,
+        CancellationToken cancellationToken = default)
+    {
+        DefinirUsuarioNasEntidadesNovas();
+
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+
+    private void DefinirUsuarioNasEntidadesNovas()
+    {
+        foreach (var entrada in ChangeTracker.Entries<IEntidadeComUsuario>())
+        {
+            if (entrada.State == EntityState.Added)
+                entrada.Entity.UsuarioId = UsuarioAtualId;
+        }
     }
 }

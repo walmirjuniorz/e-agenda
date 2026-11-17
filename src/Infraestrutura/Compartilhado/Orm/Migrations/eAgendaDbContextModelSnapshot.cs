@@ -214,7 +214,7 @@ namespace eAgenda.Infraestrutura.Compartilhado.Orm.Migrations
                     b.Property<string>("Local")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TipoCompromissoEnum")
+                    b.Property<string>("TipoCompromisso")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

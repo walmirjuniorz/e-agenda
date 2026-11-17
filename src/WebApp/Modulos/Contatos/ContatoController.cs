@@ -109,7 +109,10 @@ namespace eAgenda.WebApp.Modulos.Contatos
         [HttpPost]
         public ActionResult Excluir(ExcluirContatoViewModel viewModel)
         {
-            servicoContato.Excluir(viewModel.Id);
+            Result resultado = servicoContato.Excluir(viewModel.Id);
+
+            if (resultado.IsFailed)
+                TempData["MensagemErro"] = resultado.Errors.First().Message;
 
             return RedirectToAction(nameof(Listar));
         }

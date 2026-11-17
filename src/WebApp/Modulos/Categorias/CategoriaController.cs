@@ -102,7 +102,10 @@ public sealed class CategoriaController(
     [HttpPost]
     public ActionResult Excluir(ExcluirCategoriaViewModel viewModel)
     {
-        servicoCategoria.Excluir(viewModel.Id);
+        Result resultado = servicoCategoria.Excluir(viewModel.Id);
+
+        if (resultado.IsFailed)
+            TempData["MensagemErro"] = resultado.Errors.First().Message;
 
         return RedirectToAction(nameof(Listar));
     }

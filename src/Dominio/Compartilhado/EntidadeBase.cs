@@ -6,7 +6,12 @@ public sealed class ErroValidacao
     public required string Mensagem { get; set; }
 }
 
-public abstract class EntidadeBase<T>
+public interface IEntidadeComUsuario
+{
+    Guid UsuarioId { get; set; }
+}
+
+public abstract class EntidadeBase<T> : IEntidadeComUsuario
 {
     public Guid Id { get; set; } = Guid.CreateVersion7();
     public Guid UsuarioId { get; set; } = Guid.Empty;
