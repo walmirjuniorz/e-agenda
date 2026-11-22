@@ -1,8 +1,9 @@
 ﻿using Microsoft.Playwright;
 
-namespace Tarefae2eTests;
+namespace Tarefae2eTests.Modulos.Tarefas;
 
 [TestClass]
+[DoNotParallelize]
 public sealed class Tarefae2eTests
 {
     private IPlaywright playwright = null!;
@@ -32,16 +33,72 @@ public sealed class Tarefae2eTests
     public async Task Deve_Cadastrar_Tarefa_Corretamente()
     {
         // Arranjo
-        await page.GotoAsync("http://localhost:5096/Tarefa/Cadastrar");
+        await page.GotoAsync("http://localhost:5096");
 
         await page.GetByLabel("E-mail").FillAsync("juniortestes@gmail.com");
-
         await page.GetByLabel("Senha").FillAsync("Teste@123");
-
         await page.GetByRole(AriaRole.Button, new() { Name = "Entrar" }).ClickAsync();
 
+        await page.GotoAsync("http://localhost:5096/Tarefa/Cadastrar");
+
         // Ação
+        await page.GetByLabel("Título").FillAsync("Lavar o cachorro");
+        await page.GetByLabel("Prioridade").SelectOptionAsync("Alta");
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Confirmar" }).ClickAsync();
+
+        ILocator card = page.Locator(".card").Filter(new() { HasText = "Lavar o cachorro" }).First;
 
         // Asserção
+        Assert.IsTrue(await card.IsVisibleAsync());
+    }
+    [TestMethod]
+    public async Task Deve_Editar_Tarefa_Corretamente()
+    {
+        // Arranjo
+        await page.GotoAsync("http://localhost:5096");
+
+        await page.GetByLabel("E-mail").FillAsync("juniortestes@gmail.com");
+        await page.GetByLabel("Senha").FillAsync("Teste@123");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Entrar" }).ClickAsync();
+
+        await page.GotoAsync("http://localhost:5096/Tarefa/Listar");
+
+        await page.GetByRole(AriaRole.Link, new() { Name = "Editar" }).First.ClickAsync();
+
+        // Ação
+        await page.GetByLabel("Título").FillAsync("Limpar o cachorro");
+        await page.GetByLabel("Prioridade").SelectOptionAsync("Baixa");
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Confirmar" }).ClickAsync();
+
+        ILocator card = page.Locator(".card").Filter(new() { HasText = "Limpar o cachorro" }).First;
+
+        // Asserção
+        Assert.IsTrue(await card.IsVisibleAsync());
+
+    }
+    [TestMethod]
+    public async Task Deve_Excluir_Tarefa_Corretamente()
+    {
+        // Arranjo
+        await page.GotoAsync("http://localhost:5096");
+
+        await page.GetByLabel("E-mail").FillAsync("juniortestes@gmail.com");
+        await page.GetByLabel("Senha").FillAsync("Teste@123");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Entrar" }).ClickAsync();
+
+        await page.GotoAsync("http://localhost:5096/Tarefa/Listar");
+
+        ILocator card = page.Locator(".card").Filter(new() { HasText = "Limpar o cachorro" }).First;
+
+        await card.GetByRole(AriaRole.Link, new() { Name = "Excluir" }).ClickAsync();
+
+        // Ação
+        await page.GetByRole(AriaRole.Button, new() { Name = "Confirmar" }).ClickAsync();
+
+        // Asserção
+        Assert.IsFalse(await card.IsVisibleAsync());
+
     }
 }
