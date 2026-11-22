@@ -1,4 +1,5 @@
 ﻿using Microsoft.Playwright;
+using Tarefae2eTests.Compartilhado;
 
 namespace Tarefae2eTests.Modulos.Tarefas;
 
@@ -6,14 +7,21 @@ namespace Tarefae2eTests.Modulos.Tarefas;
 [DoNotParallelize]
 public sealed class Tarefae2eTests
 {
+    private TestAplicationFactory aplicationFactory = null!;
     private IPlaywright playwright = null!;
     private IBrowser browser = null!;
     private IBrowserContext browserContext = null!;
     private IPage page = null!;
+    private string? baseUrl = null;
 
     [TestInitialize]
     public async Task InicializarTeste()
     {
+        aplicationFactory = new TestAplicationFactory();
+        await aplicationFactory.StartAsync();
+
+        baseUrl = aplicationFactory.BaseUrl;
+
         playwright = await Playwright.CreateAsync();
         browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
@@ -33,13 +41,13 @@ public sealed class Tarefae2eTests
     public async Task Deve_Cadastrar_Tarefa_Corretamente()
     {
         // Arranjo
-        await page.GotoAsync("http://localhost:5096");
+        await page.GotoAsync($"{baseUrl}/Autenticacao/Login");
 
         await page.GetByLabel("E-mail").FillAsync("juniortestes@gmail.com");
         await page.GetByLabel("Senha").FillAsync("Teste@123");
         await page.GetByRole(AriaRole.Button, new() { Name = "Entrar" }).ClickAsync();
 
-        await page.GotoAsync("http://localhost:5096/Tarefa/Cadastrar");
+        await page.GotoAsync($"{baseUrl}/Tarefa/Cadastrar");
 
         // Ação
         await page.GetByLabel("Título").FillAsync("Lavar o cachorro");
@@ -56,17 +64,17 @@ public sealed class Tarefae2eTests
     public async Task Deve_Editar_Tarefa_Corretamente()
     {
         // Arranjo
-        await page.GotoAsync("http://localhost:5096");
+        await page.GotoAsync($"{baseUrl}/Autenticacao/Login");
 
         await page.GetByLabel("E-mail").FillAsync("juniortestes@gmail.com");
         await page.GetByLabel("Senha").FillAsync("Teste@123");
         await page.GetByRole(AriaRole.Button, new() { Name = "Entrar" }).ClickAsync();
 
-        await page.GotoAsync("http://localhost:5096/Tarefa/Listar");
-
-        await page.GetByRole(AriaRole.Link, new() { Name = "Editar" }).First.ClickAsync();
+        await page.GotoAsync($"{baseUrl}/Tarefa/Listar");
 
         // Ação
+        await page.GetByRole(AriaRole.Link, new() { Name = "Editar" }).First.ClickAsync();
+
         await page.GetByLabel("Título").FillAsync("Limpar o cachorro");
         await page.GetByLabel("Prioridade").SelectOptionAsync("Baixa");
 
@@ -82,19 +90,19 @@ public sealed class Tarefae2eTests
     public async Task Deve_Excluir_Tarefa_Corretamente()
     {
         // Arranjo
-        await page.GotoAsync("http://localhost:5096");
+        await page.GotoAsync($"{baseUrl}/Autenticacao/Login");
 
         await page.GetByLabel("E-mail").FillAsync("juniortestes@gmail.com");
         await page.GetByLabel("Senha").FillAsync("Teste@123");
         await page.GetByRole(AriaRole.Button, new() { Name = "Entrar" }).ClickAsync();
 
-        await page.GotoAsync("http://localhost:5096/Tarefa/Listar");
+        await page.GotoAsync($"{baseUrl}/Tarefa/Listar");
 
+        // Ação
         ILocator card = page.Locator(".card").Filter(new() { HasText = "Limpar o cachorro" }).First;
 
         await card.GetByRole(AriaRole.Link, new() { Name = "Excluir" }).ClickAsync();
 
-        // Ação
         await page.GetByRole(AriaRole.Button, new() { Name = "Confirmar" }).ClickAsync();
 
         // Asserção
